@@ -1,0 +1,65 @@
+package com.retail.ECommerceApplication.controller;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.retail.ECommerceApplication.jwt.JwtService;
+import com.retail.ECommerceApplication.requestdto.AuthRequestDto;
+import com.retail.ECommerceApplication.requestdto.OtpRequest;
+import com.retail.ECommerceApplication.requestdto.UserRequestDto;
+import com.retail.ECommerceApplication.responsedto.AuthResponseDto;
+import com.retail.ECommerceApplication.responsedto.UserResponseDto;
+import com.retail.ECommerceApplication.service.AuthService;
+import com.retail.ECommerceApplication.utility.ErrorStructure;
+import com.retail.ECommerceApplication.utility.ResponseStructure;
+import com.retail.ECommerceApplication.utility.SimpleResponseStructure;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.mail.MessagingException;
+import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
+@RestController
+@RequestMapping("/api/v1")
+@AllArgsConstructor
+//@CrossOrigin(origins = "http://localhost:5173/")
+public class AuthController {
+	private AuthService authService;
+	private JwtService jwtService;
+	@Operation(description = "This EndPoint Is Used To Save The User Data",responses = {
+			@ApiResponse(responseCode = "200",description = "Data Is Saved Successfully"),
+			@ApiResponse(responseCode = "404",description = "Invalid Input!!!",
+			content = @Content(schema = @Schema(implementation = ErrorStructure.class)))
+	})
+	@PostMapping("/users/register")
+	public ResponseEntity<SimpleResponseStructure> registerUser(@RequestBody @Valid UserRequestDto userRequestDto){
+		return authService.registerUser(userRequestDto);
+	}
+	@Operation(description = "This EndPoint Is Used To Verify The Email By OTP",responses = {
+			@ApiResponse(responseCode = "200",description = "OTP Is Generated "),
+			@ApiResponse(responseCode = "404",description = "Invalid Input!!!",
+			content =@Content(schema = @Schema(implementation = ErrorStructure.class)) )
+	})
+	@PostMapping("/verifyEmail")
+	public ResponseEntity<ResponseStructure<UserResponseDto>> verifyOtp(@RequestBody @Valid OtpRequest otpRequest){
+		return authService.verifyOtp(otpRequest);
+	}
+	@GetMapping("/test")
+	public String accessToken() {
+		return jwtService.generateAccessToken("Simanta Sen"); 
+	}
+	@PostMapping("users/login")
+	public ResponseEntity<ResponseStructure<AuthResponseDto>> userLogin(@RequestBody @Valid AuthRequestDto authRequestDto){
+		return authService.userLogin(authRequestDto);
+	}
+
+}

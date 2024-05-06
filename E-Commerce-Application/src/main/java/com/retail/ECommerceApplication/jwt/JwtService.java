@@ -1,0 +1,62 @@
+package com.retail.ECommerceApplication.jwt;
+import java.security.Key;
+import java.util.Date;
+import java.util.HashMap;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import com.retail.ECommerceApplication.entity.User;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.lang.Maps;
+import io.jsonwebtoken.security.Keys;
+@Service
+public class JwtService {
+
+	@Value("${myapp.jwt.secret}")
+	private String secret;
+
+	@Value("${myapp.jwt.access.expiration}")
+	private long accessExpiration;
+
+	@Value("${myapp.jwt.refresh.expiration}")
+	private long refeshExpiration;
+
+	public String generateAccessToken(User user,String role) {
+		return generateToken(user,role, accessExpiration);
+	}
+	public String generateRefreshToken(User user,String role) {
+		return generateToken(user,role, refeshExpiration);
+	}
+	private String generateToken(User user, String role, long expiration) {
+		return	Jwts.builder()	
+				.setClaims(Maps.of("role", user.getUserRole()).build())
+				.setSubject(user.getUserName())
+				.setIssuedAt(new Date(System.currentTimeMillis()))
+				.setExpiration(new Date(System.currentTimeMillis() + expiration ))
+				.signWith(getSignatureKey(),SignatureAlgorithm.HS256)
+				.compact();
+	}
+	private Key getSignatureKey() {
+		return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
+	}
+	public String getUserName(String token) {
+		return getClaims(token).getSubject();
+	}
+	public String getUserRole(String token) {
+		return getClaims(token).get("role",String.class);
+	}
+	public Date getIssueDate(String token) {
+		return getClaims(token).getIssuedAt();
+	}
+	//To Decrypt The Token
+	private Claims getClaims(String token) {
+		return	Jwts.parserBuilder().setSigningKey(getSignatureKey())
+				.build().parseClaimsJws(token).getBody();
+	}
+
+}
