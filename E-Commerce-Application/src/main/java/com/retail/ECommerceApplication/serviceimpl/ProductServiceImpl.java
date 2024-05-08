@@ -13,6 +13,7 @@ import com.retail.ECommerceApplication.entity.Seller;
 import com.retail.ECommerceApplication.enums.AvailabilityStatus;
 import com.retail.ECommerceApplication.enums.ProductCatagory;
 import com.retail.ECommerceApplication.exception.IllegalArgumentException;
+import com.retail.ECommerceApplication.repository.ImageRepository;
 import com.retail.ECommerceApplication.repository.ProductRepository;
 import com.retail.ECommerceApplication.repository.UserRepository;
 import com.retail.ECommerceApplication.requestdto.FilterOptions;
@@ -30,6 +31,7 @@ public class ProductServiceImpl implements ProductService {
 	private ResponseStructure<ProductResponse> responseStructure;
 	private UserRepository userRepository;
 	private ProductSpecification productSpecification;
+	private ImageRepository imageRepository;
 	private ResponseStructure<List<ProductResponse>> responseStructure2;
 
 	@Override
@@ -78,11 +80,19 @@ public class ProductServiceImpl implements ProductService {
 			prod.add(mapToProductResponse(product));
 		}
 		return ResponseEntity.ok(responseStructure2.setStatusCode(HttpStatus.OK.value())
-				.setStatusMessage("Product Data Is Fetched Successfuuly")
+				.setStatusMessage("Product Data Is Fetched Successfully")
 				.setStatusData(mapToProductResponse2(prod)));
 	}
-
-
+	@Override
+	public ResponseEntity<ResponseStructure<List<ProductResponse>>> findAll() {
+		List<Product> products = productRepository.findAll();
+		if(!products.isEmpty()) {
+			return	ResponseEntity.ok(responseStructure2.setStatusCode(HttpStatus.OK.value())
+					.setStatusMessage("All The Product Data Is Fetched Successfully")
+					.setStatusData(mapToProductResponse3(products)));
+		}
+		return null;
+	}
 	// ------------------------------------------------------------------------------------------------------------------------------
 	private Product mapToProductRequest(ProductRequest productRequest, Product product) {
 		product.setProductName(productRequest.getProductName());
@@ -95,37 +105,43 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	private ProductResponse mapToProductResponse(Product product) {
-		return ProductResponse.builder().productId(product.getProductId()).productName(product.getProductName())
-				.productDescription(product.getProductDescription()).productPrice(product.getProductPrice())
-				.productQuantity(product.getProductQuantity()).availabilityStatus(product.getAvailabilityStatus())
-				.productCatagory(product.getProductCatagory()).images(null).coverImage(null).build();
+		return ProductResponse.builder().productId(product.getProductId())
+				.productName(product.getProductName())
+				.productDescription(product.getProductDescription())
+				.productPrice(product.getProductPrice())
+				.productQuantity(product.getProductQuantity())
+				.availabilityStatus(product.getAvailabilityStatus())
+				.productCatagory(product.getProductCatagory())
+				.images(null)
+				.coverImage(null)
+				.build();
+	}
+	private List<ProductResponse> mapToProductResponse3(List<Product> products) {
+
+		List<ProductResponse> list=new ArrayList<>();
+		for(Product li:products)
+		{
+			list.add(mapToProductResponse(li));
+		}
+		return list;
 	}
 	private List<ProductResponse> mapToProductResponse2(List<ProductResponse> prodResponses) {
-	    List<ProductResponse> mappedList = new ArrayList<>();
-	    
-	    for (ProductResponse prod : prodResponses) {
-	        ProductResponse mappedProd = ProductResponse.builder()
-	                .productId(prod.getProductId())
-	                .productName(prod.getProductName())
-	                .productDescription(prod.getProductDescription())
-	                .productPrice(prod.getProductPrice())
-	                .productQuantity(prod.getProductQuantity())
-	                .availabilityStatus(prod.getAvailabilityStatus())
-	                .productCatagory(prod.getProductCatagory())  // Assuming it's getProductCategory() not getProductCatagory()
-	                .images(null)  // Set your images here or leave as null if not applicable
-	                .coverImage(null)  // Set your cover image here or leave as null if not applicable
-	                .build();
-	        
-	        mappedList.add(mappedProd);
-	    }
-	    
-	    return mappedList;
+		List<ProductResponse> mappedList = new ArrayList<>();
+		for (ProductResponse prod : prodResponses) {
+			ProductResponse mappedProd = ProductResponse.builder()
+					.productId(prod.getProductId())
+					.productName(prod.getProductName())
+					.productDescription(prod.getProductDescription())
+					.productPrice(prod.getProductPrice())
+					.productQuantity(prod.getProductQuantity())
+					.availabilityStatus(prod.getAvailabilityStatus())
+					.productCatagory(prod.getProductCatagory())  // Assuming it's getProductCategory() not getProductCatagory()
+					.images(null)  // Set your images here or leave as null if not applicable
+					.coverImage(null)  // Set your cover image here or leave as null if not applicable
+					.build();
+			mappedList.add(mappedProd);
+		}
+		return mappedList;
 	}
-
-
-
-
-
-
 
 }

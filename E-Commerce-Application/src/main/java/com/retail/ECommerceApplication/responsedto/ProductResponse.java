@@ -1,4 +1,5 @@
 package com.retail.ECommerceApplication.responsedto;
+import java.util.ArrayList;
 import java.util.List;
 import com.retail.ECommerceApplication.enums.AvailabilityStatus;
 import com.retail.ECommerceApplication.enums.ProductCatagory;
@@ -16,6 +17,6 @@ public class ProductResponse {
 	private int productQuantity;
 	private AvailabilityStatus availabilityStatus;
 	private ProductCatagory productCatagory;
-	private List<String> images;
+	private List<String> images=new ArrayList<>();
 	private String coverImage;
 }

@@ -52,7 +52,7 @@ function Login() {
         localStorage.setItem("userData", JSON.stringify(responseData));
 
         setUser(responseData);
-        navigate("/");
+        navigate("/myProfile");
       }
     } catch (error) {
       if (error.response) {

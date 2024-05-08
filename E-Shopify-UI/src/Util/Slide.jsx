@@ -22,9 +22,6 @@ const ImageSlider = () => {
       <div className="slider-container">
         <Slider {...settings}>
           <div>
-            <img src={img1} alt="Image 1" />
-          </div>
-          <div>
             <img src={img3} alt="Image 2" />
           </div>
           <div>

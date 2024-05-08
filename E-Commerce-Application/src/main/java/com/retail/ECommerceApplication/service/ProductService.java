@@ -12,5 +12,7 @@ public interface ProductService {
 	ResponseEntity<ResponseStructure<ProductResponse>> findProductById(int productId);
 	ResponseEntity<ResponseStructure<ProductResponse>> updateProduct(ProductRequest productRequest, int productId);
 	ResponseEntity<ResponseStructure<List<ProductResponse>>> findByOptions(FilterOptions filterOptions);
+	ResponseEntity<ResponseStructure<List<ProductResponse>>> findAll();
+	
 
 }

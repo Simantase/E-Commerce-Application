@@ -84,5 +84,9 @@ public class ProductController {
 	public ResponseEntity<ResponseStructure<List<ProductResponse>>> findByOptions(FilterOptions filterOptions) {
 		return productService.findByOptions(filterOptions);
 	}
+	@GetMapping("/products/allProducts")
+	public ResponseEntity<ResponseStructure<List<ProductResponse>>> findAll(){
+		return productService.findAll();
+	}
 
 }
