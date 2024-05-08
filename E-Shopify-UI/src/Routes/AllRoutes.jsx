@@ -16,6 +16,9 @@ import AddContact from "../Util/AddContact.jsx";
 import UpdateAddress from "../Util/UpdateAddress.jsx";
 import AddProduct from "../Private/Seller/AddProduct.jsx";
 import MyProfile from "../Private/Seller/MyProfile.jsx";
+import PowerBank from "../Private/Seller/PowerBank.jsx";
+import Mobile from "../Private/Seller/Mobile.jsx";
+import Laptop from "../Private/Seller/Laptop.jsx";
 const AllRoutes = () => {
   const { user } = useAuth();
 
@@ -52,7 +55,10 @@ const AllRoutes = () => {
           element={<UpdateAddress />}
         />,
         <Route key="addProduct" path="/addProduct" element={<AddProduct />} />,
-        <Route key="myProfile" path="/myProfile" element={<MyProfile/>}/>
+        <Route key="myProfile" path="/myProfile" element={<MyProfile/>}/>,
+        <Route key="powerBank" path="/powerBank" element={<PowerBank/>}/>,
+        <Route key="mobile" path="/mobile" element={<Mobile/>}/>,
+        <Route key="laptop" path="/laptop" element={<Laptop/>}/>
       );
     }
   } else {

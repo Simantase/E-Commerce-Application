@@ -350,7 +350,7 @@ const Header = () => {
             <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-10">
               <div className="flex flex-col gap-2">
                 <Link
-                  to={"/profile"}
+                  to={"/myProfile"}
                   className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 flex items-center"
                 >
                   <FaRegCircleUser className="ml-2" />

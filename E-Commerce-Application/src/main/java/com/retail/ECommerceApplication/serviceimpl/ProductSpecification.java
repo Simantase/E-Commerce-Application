@@ -1,5 +1,4 @@
 package com.retail.ECommerceApplication.serviceimpl;
-
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 

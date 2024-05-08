@@ -1,39 +1,38 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import img1 from '../Common/images/K10.jpg';
+import img2 from '../Common/images/R7.jpg';
+import img3 from '../Common/images/P13.jpg';
 
-const MyProfile = () => {
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchProductDetails = async () => {
-      try {
-        const response = await axios.get("http://localhost:8080/api/v1/products/1"); // Replace "1" with the actual product ID
-        console.log(response.data)
-        setProduct("Data" +response.data);
-        setLoading(false);
-      } catch (error) {
-        setError(error.message);
-        setLoading(false);
-      }
-    };
-
-    fetchProductDetails();
-  }, []); // Empty dependency array ensures the effect runs only once on component mount
-
-  if (loading) return <p>Loading product details...</p>;
-  if (error) return <p>Error fetching product details: {error}</p>;
-
+const Body = () => {
   return (
-    <div>
-      <h1>{product.productName}</h1>
-      <p>Description: {product.productDescription}</p>
-      <p>Price: {product.productPrice}</p>
-      <p>Quantity: {product.productQuantity}</p>
-      {/* Render other product details as needed */}
+    <div className='flex items-center justify-evenly h-40 m- pl-20 pr-20 shadow-xl'>
+      <div>
+        <div>
+          <img src={img1} alt="B3" height={50} width={50} />
+        </div>
+        <div className="font-bold">
+          <Link to="/mobile">Mobile</Link>
+        </div>
+      </div>
+      <div>
+        <div>
+          <img src={img2} alt='B4' height={65} width={65} />
+        </div>
+        <div className='font-bold'>
+        <Link to="/laptop">Laptop</Link>
+        </div>
+      </div>
+      <div>
+        <div>
+          <img src={img3} alt='B5' height={70} width={70} />
+        </div>
+        <div className='font-bold'>
+          <Link to="/powerBank">PowerBank</Link>
+        </div>
+      </div>
     </div>
   );
-};
+}
 
-export default MyProfile;
+export default Body;

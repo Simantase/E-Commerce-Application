@@ -11,14 +11,12 @@ const App = () => {
     <div className="m-0">
       <Header />
       <Outlet />
-      {/* <Body/>
-      <Slide/>
-      <Electronics/>
-      <Electronics1/> */}
-      
+      {/* <Body />
+      <Slide />
+      <Electronics />
+      <Electronics1 /> */}
     </div>
   );
 };
-
 
 export default App;
